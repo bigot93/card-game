@@ -34,17 +34,71 @@ Canvas API와 JavaScript로 만든 간단한 카드 뒤집기 메모리 게임�
 #### `top_scores` 뷰
 최고 점수를 조회하기 위한 뷰입니다. 시도 횟수가 적을수록 좋은 점수입니다.
 
-## 실행 방법
+## 설정 방법
 
-1. 브라우저에서 `index.html` 파일을 엽니다.
-2. 또는 로컬 서버를 실행합니다:
+### 방법 1: 자동 빌드 스크립트 사용 (권장)
+
+#### 1-1. 환경 변수 사용
 
 ```bash
+# 환경 변수로 직접 설정
+SUPABASE_URL=your-url SUPABASE_ANON_KEY=your-key npm run build:config
+```
+
+#### 1-2. .env 파일 사용
+
+```bash
+# .env.example을 복사
+cp .env.example .env
+
+# .env 파일 편집하여 실제 키 입력
+# SUPABASE_URL=https://your-project.supabase.co
+# SUPABASE_ANON_KEY=your-anon-key-here
+
+# 빌드 실행
+npm run build:config
+```
+
+### 방법 2: 수동 생성
+
+```bash
+# 예제 파일을 복사
+cp supabase-config.example.js supabase-config.js
+
+# 파일을 열고 실제 키 입력
+```
+
+**⚠️ 보안 주의사항:**
+- `supabase-config.js` 파일은 `.gitignore`에 포함되어 있어 Git에 커밋되지 않습니다.
+- `.env` 파일도 Git에 커밋되지 않습니다.
+- 절대 실제 키를 GitHub에 업로드하지 마세요.
+- 배포 시에는 배포 플랫폼의 환경 변수 기능을 사용하세요.
+
+## 실행 방법
+
+### 1. 의존성 설치 (선택사항)
+
+```bash
+npm install
+```
+
+### 2. Supabase 설정 파일 생성
+
+위의 "설정 방법"을 참고하여 `supabase-config.js` 파일을 생성하세요.
+
+### 3. 로컬 서버 실행
+
+```bash
+# npm 스크립트 사용 (권장)
+npm start
+# 또는
+npm run dev  # 설정 빌드 + 서버 시작
+
+# 또는 직접 실행
+npx http-server -p 8000
+
 # Python 3
 python -m http.server 8000
-
-# Node.js
-npx http-server
 ```
 
 그 다음 브라우저에서 `http://localhost:8000` 접속

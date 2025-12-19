@@ -13,9 +13,10 @@
    - `SUPABASE_URL`: Supabase 프로젝트 URL
    - `SUPABASE_ANON_KEY`: Supabase Anon Key
 
-3. `netlify.toml` 파일 생성 (선택사항):
+3. `netlify.toml` 파일 생성:
 ```toml
 [build]
+  command = "npm run build"
   publish = "."
 
 [[redirects]]
@@ -24,9 +25,8 @@
   status = 200
 ```
 
-4. 빌드 시 환경 변수를 주입하는 스크립트 필요:
-   - Netlify Functions 사용
-   - 또는 빌드 시 `supabase-config.js` 파일 생성
+4. 빌드 시 자동으로 `supabase-config.js`가 생성됩니다.
+   - 환경 변수가 설정되어 있으면 자동으로 사용됩니다.
 
 ### Vercel
 
@@ -38,16 +38,52 @@
 3. `vercel.json` 파일 생성:
 ```json
 {
-  "buildCommand": "node scripts/build-config.js",
+  "buildCommand": "npm run build",
   "outputDirectory": "."
 }
 ```
 
+4. 빌드 시 자동으로 `supabase-config.js`가 생성됩니다.
+
 ### GitHub Pages
 
-GitHub Pages는 환경 변수를 직접 지원하지 않으므로:
-1. 빌드 스크립트를 사용하여 배포 전에 `supabase-config.js` 생성
-2. 또는 GitHub Secrets를 사용하는 GitHub Actions 워크플로우 설정
+GitHub Pages는 환경 변수를 직접 지원하지 않으므로 GitHub Actions를 사용합니다:
+
+1. `.github/workflows/deploy.yml` 파일 생성:
+```yaml
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+      
+      - name: Build config
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: npm run build:config
+      
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+```
+
+2. GitHub 저장소 Settings → Secrets and variables → Actions에서 다음 추가:
+   - `SUPABASE_URL`
+   - `SUPABASE_ANON_KEY`
 
 ### 수동 배포
 
