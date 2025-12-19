@@ -45,6 +45,11 @@ const finalKey = SUPABASE_ANON_KEY || envVars.SUPABASE_ANON_KEY || '';
 if (!finalUrl || !finalKey) {
     console.error('❌ 오류: SUPABASE_URL과 SUPABASE_ANON_KEY가 필요합니다.');
     console.error('');
+    console.error('현재 환경 변수 상태:');
+    console.error(`  SUPABASE_URL: ${SUPABASE_URL ? '설정됨' : '설정 안 됨'}`);
+    console.error(`  SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY ? '설정됨' : '설정 안 됨'}`);
+    console.error(`  .env 파일: ${fs.existsSync(envPath) ? '존재함' : '존재하지 않음'}`);
+    console.error('');
     console.error('다음 중 하나의 방법으로 설정하세요:');
     console.error('1. 환경 변수:');
     console.error('   SUPABASE_URL=xxx SUPABASE_ANON_KEY=yyy node scripts/build-config.js');
@@ -53,6 +58,8 @@ if (!finalUrl || !finalKey) {
     console.error('   SUPABASE_ANON_KEY=yyy');
     console.error('3. package.json 스크립트 사용:');
     console.error('   npm run build:config');
+    console.error('4. Vercel/Netlify:');
+    console.error('   대시보드에서 Environment Variables 설정');
     process.exit(1);
 }
 

@@ -32,18 +32,21 @@
 
 1. Vercel 대시보드에서 프로젝트 설정 → Environment Variables로 이동
 2. 다음 환경 변수 추가:
-   - `SUPABASE_URL`
-   - `SUPABASE_ANON_KEY`
+   - `SUPABASE_URL`: Supabase 프로젝트 URL
+   - `SUPABASE_ANON_KEY`: Supabase Anon Key
+   - **중요**: Production, Preview, Development 환경 모두에 설정해야 합니다.
 
-3. `vercel.json` 파일 생성:
-```json
-{
-  "buildCommand": "npm run build",
-  "outputDirectory": "."
-}
-```
+3. Vercel 프로젝트 설정에서:
+   - **Build Command**: `npm run build` (또는 `npm install && npm run build`)
+   - **Output Directory**: `.` (현재 디렉토리)
+   - **Install Command**: `npm install` (기본값)
 
 4. 빌드 시 자동으로 `supabase-config.js`가 생성됩니다.
+
+**문제 해결:**
+- 빌드 로그에서 `build:config` 스크립트가 실행되는지 확인
+- 환경 변수가 제대로 전달되는지 확인
+- 빌드 후 생성된 파일 목록에서 `supabase-config.js`가 있는지 확인
 
 ### GitHub Pages
 
